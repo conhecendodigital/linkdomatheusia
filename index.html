@@ -437,26 +437,39 @@
 
             .bio-section {
                 flex-direction: column;
+                align-items: center;
+                position: relative;
             }
 
             .bio-photo {
                 width: 100%;
-                height: 300px;
-                -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-                mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                height: 320px;
+                object-fit: cover;
+                object-position: top center;
+                display: block;
+                position: relative;
+                z-index: 1;
+                -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
             }
 
             .bio-text {
                 width: 100%;
-                padding: 24px 20px;
+                padding: 24px 20px 40px;
+                position: relative;
+                z-index: 2;
+                margin-top: -40px;
             }
 
             .bio-name {
                 font-size: 1.4rem;
+                margin-bottom: 16px;
             }
 
             .bio-paragraphs p {
                 font-size: 0.95rem;
+                line-height: 1.7;
+                margin-bottom: 16px;
             }
 
             .socials {
@@ -491,13 +504,43 @@
                 width: 78%;
             }
 
+            .bio-section {
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+            }
+
             .bio-photo {
-                width: 42%;
+                width: 75%;
+                max-width: 420px;
+                height: 400px;
+                object-fit: cover;
+                object-position: top center;
+                display: block;
+                position: relative;
+                z-index: 1;
+                -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
             }
 
             .bio-text {
-                width: 58%;
-                padding: 40px 40px 40px 16px;
+                width: 100%;
+                padding: 32px 48px 48px;
+                position: relative;
+                z-index: 2;
+                margin-top: -40px;
+                text-align: left;
+            }
+
+            .bio-name {
+                font-size: 1.6rem;
+                margin-bottom: 20px;
+            }
+
+            .bio-paragraphs p {
+                font-size: 1rem;
+                line-height: 1.8;
+                margin-bottom: 18px;
             }
         }
 
