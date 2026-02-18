@@ -183,13 +183,24 @@
             word-break: break-word;
         }
 
+        .card-logo {
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
         .card-subtitle {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.85);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            max-width: 360px;
+            line-height: 1.5;
+            text-align: center;
+            max-width: 85%;
             word-break: break-word;
         }
 
@@ -411,7 +422,11 @@
             }
 
             .card-subtitle {
-                font-size: 0.75rem;
+                font-size: 0.95rem;
+            }
+
+            .card-logo {
+                max-width: 160px;
             }
 
             .card-cta {
@@ -646,11 +661,17 @@
                     const imageHTML = c.image
                         ? `<img src="${esc(c.image)}" class="card-image" alt="${esc(c.title)}" />`
                         : `<div class="card-image-placeholder"></div>`;
+
+                    const hasLogo = c.logoUrl && c.logoUrl.trim().length > 0;
+                    const logoHTML = hasLogo ? `<img src="${esc(c.logoUrl)}" class="card-logo" alt="${esc(c.title)}" />` : '';
+                    const titleHTML = hasLogo ? '' : `<h2 class="card-title">${esc(c.title)}</h2>`;
+
                     div.innerHTML = `
                     <div class="card-image-wrapper">${imageHTML}</div>
                     <div class="card-content">
                         <span class="card-tag">${esc(c.tag)}</span>
-                        <h2 class="card-title">${esc(c.title)}</h2>
+                        ${logoHTML}
+                        ${titleHTML}
                         <p class="card-subtitle">${esc(c.subtitle)}</p>
                         <a href="${esc(c.ctaUrl || '#')}" class="card-cta" target="_blank" rel="noopener noreferrer">${esc(c.ctaText)}</a>
                     </div>`;
