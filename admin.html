@@ -925,8 +925,19 @@
   </div>
   <p class="img-hint">💡 Recomendado: 580 × 380px — JPG ou PNG, máx 2MB</p>
   <div class="fg"><label>Tag</label><input type="text" data-f="tag" data-i="${i}" value="${esc(c.tag)}" /></div>
-  <div class="fg"><label>Logo do Produto (URL) — se preenchido, substitui o título</label><input type="text" data-f="logoUrl" data-i="${i}" value="${esc(c.logoUrl || '')}" placeholder="Cole a URL da logo do produto…" /></div>
-  <div class="fg"><label>Título Grande (usado se não houver Logo)</label><input type="text" data-f="title" data-i="${i}" value="${esc(c.title)}" /></div>
+  <div class="fg"><label>Logo do Produto (URL) — se preenchido, substitui o título</label>
+    <div class="img-row">
+      <div class="fg" style="margin-bottom:0"><input type="text" data-f="logoUrl" data-i="${i}" value="${esc(c.logoUrl && !c.logoUrl.startsWith('data:') ? c.logoUrl : '')}" placeholder="Cole a URL da logo do produto…" /></div>
+      <button type="button" class="btn-upload logo-upload-btn" data-i="${i}">📁 Subir</button>
+      <input type="file" accept="image/*" data-i="${i}" class="logo-file-input" style="display:none" />
+      <img src="${c.logoUrl ? c.logoUrl : ''}" class="img-preview${c.logoUrl ? ' has-img' : ''}" data-li="${i}" alt="Logo Preview" />
+    </div>
+    <button type="button" class="btn-delete" style="margin-top:6px;font-size:0.72rem;min-height:32px;padding:6px;${c.logoUrl ? '' : 'display:none;'}" data-remove-logo="${i}">✕ Remover logo</button>
+  </div>
+  <div class="title-field-wrapper" data-tw="${i}" style="${c.logoUrl ? 'display:none' : ''}">
+    <div class="fg"><label>Título Grande</label><input type="text" data-f="title" data-i="${i}" value="${esc(c.title)}" /></div>
+  </div>
+  <p class="title-info-msg" data-ti="${i}" style="font-size:0.8rem;color:#888;margin-bottom:12px;${c.logoUrl ? '' : 'display:none'}">ℹ️ O título é ocultado automaticamente quando há uma logo.</p>
   <div class="fg"><label>Subtítulo / Descrição</label><textarea data-f="subtitle" data-i="${i}">${esc(c.subtitle)}</textarea></div>
   <div class="fg"><label>Texto do Botão CTA</label><input type="text" data-f="ctaText" data-i="${i}" value="${esc(c.ctaText)}" /></div>
   <div class="fg"><label>URL de Destino</label><input type="text" data-f="ctaUrl" data-i="${i}" value="${esc(c.ctaUrl)}" /></div>
@@ -934,15 +945,82 @@
                     box.appendChild(d);
                 });
 
+                // Toggle title field visibility
+                function toggleTitleField(ceEl, idx) {
+                    const logoVal = DATA.cards[idx].logoUrl || '';
+                    const tw = ceEl.querySelector(`[data-tw="${idx}"]`);
+                    const ti = ceEl.querySelector(`[data-ti="${idx}"]`);
+                    const rmBtn = ceEl.querySelector(`[data-remove-logo="${idx}"]`);
+                    if (logoVal.trim()) {
+                        if (tw) tw.style.display = 'none';
+                        if (ti) ti.style.display = 'block';
+                        if (rmBtn) rmBtn.style.display = '';
+                    } else {
+                        if (tw) tw.style.display = '';
+                        if (ti) ti.style.display = 'none';
+                        if (rmBtn) rmBtn.style.display = 'none';
+                    }
+                }
+
                 // Bind: real-time edits
                 box.querySelectorAll('[data-f][data-i]').forEach(el => {
                     const f = el.dataset.f;
                     const idx = +el.dataset.i;
                     if (f === 'visible') {
                         el.addEventListener('change', () => { DATA.cards[idx].visible = el.checked; });
+                    } else if (f === 'logoUrl') {
+                        el.addEventListener('input', () => {
+                            DATA.cards[idx].logoUrl = el.value;
+                            const ceEl = el.closest('.ce');
+                            // Update preview
+                            const prev = ceEl.querySelector(`[data-li="${idx}"]`);
+                            if (el.value.trim()) { prev.src = el.value; prev.classList.add('has-img'); }
+                            else { prev.src = ''; prev.classList.remove('has-img'); }
+                            toggleTitleField(ceEl, idx);
+                        });
                     } else if (f !== 'image') {
                         el.addEventListener('input', () => { DATA.cards[idx][f] = el.value; });
                     }
+                });
+
+                // Bind: logo file uploads
+                box.querySelectorAll('.logo-upload-btn').forEach(btn => {
+                    btn.addEventListener('click', () => btn.nextElementSibling.click());
+                });
+                box.querySelectorAll('.logo-file-input').forEach(fi => {
+                    fi.addEventListener('change', e => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const idx = +fi.dataset.i;
+                        const reader = new FileReader();
+                        reader.onload = ev => {
+                            DATA.cards[idx].logoUrl = ev.target.result;
+                            const ceEl = fi.closest('.ce');
+                            const prev = ceEl.querySelector(`[data-li="${idx}"]`);
+                            prev.src = ev.target.result;
+                            prev.classList.add('has-img');
+                            const urlInput = ceEl.querySelector(`[data-f="logoUrl"][data-i="${idx}"]`);
+                            if (urlInput) urlInput.value = '';
+                            toggleTitleField(ceEl, idx);
+                            toast('Logo carregada!');
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                // Bind: remove logo button
+                box.querySelectorAll('[data-remove-logo]').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = +btn.dataset.removeLogo;
+                        DATA.cards[idx].logoUrl = '';
+                        const ceEl = btn.closest('.ce');
+                        const urlInput = ceEl.querySelector(`[data-f="logoUrl"][data-i="${idx}"]`);
+                        if (urlInput) urlInput.value = '';
+                        const prev = ceEl.querySelector(`[data-li="${idx}"]`);
+                        if (prev) { prev.src = ''; prev.classList.remove('has-img'); }
+                        toggleTitleField(ceEl, idx);
+                        toast('Logo removida.');
+                    });
                 });
 
                 // Bind: file uploads
