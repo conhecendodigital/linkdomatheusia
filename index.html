@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matheus Daia — Links</title>
+    <meta name="description" content="Todos os meus links em um só lugar." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ===== VARIABLES ===== */
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --text-dim: #b3b3b3;
+            --accent: #1A73E8;
+            --accent-hover: #1557b0;
+            --border: #333333;
+            --font: 'Montserrat', sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            word-break: break-word;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ===== LAYOUT ===== */
+        .pub-wrap {
+            width: 100%;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .site-header {
+            padding: 32px 16px 28px;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .logo-bar {
+            width: 4px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .logo-img {
+            width: 160px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* --- CARDS --- */
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 16px;
+        }
+
+        .hero-card {
+            position: relative;
+            width: 100%;
+            background: #000000;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(24px);
+            animation: cardIn 0.5s ease forwards;
+        }
+
+        .hero-card:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 8px 32px rgba(26, 115, 232, 0.15);
+        }
+
+        .hero-card.hidden-card {
+            display: none !important;
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            max-width: none;
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+        }
+
+        .card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: #0d1f3c;
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 0%, black 50%, transparent 100%);
+        }
+
+        .card-content {
+            background: #000000;
+            padding: 0 24px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 12px;
+            margin-top: -20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            padding: 6px 20px;
+            border-radius: 50px;
+            background: transparent;
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: #FFFFFF;
+            line-height: 1.1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+            word-break: break-word;
+        }
+
+        .card-subtitle {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            max-width: 360px;
+            word-break: break-word;
+        }
+
+        .card-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 6px;
+            background: #1A73E8;
+            color: #FFFFFF;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 16px 0;
+            border-radius: 50px;
+            width: 75%;
+            max-width: 360px;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.4);
+        }
+
+        .card-cta:hover {
+            background: #1557b0;
+            transform: scale(1.02);
+        }
+
+        .card-cta:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-card:nth-child(1) {
+            animation-delay: 0.05s;
+        }
+
+        .hero-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .hero-card:nth-child(3) {
+            animation-delay: 0.15s;
+        }
+
+        .hero-card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .hero-card:nth-child(5) {
+            animation-delay: 0.25s;
+        }
+
+        .hero-card:nth-child(6) {
+            animation-delay: 0.3s;
+        }
+
+        .hero-card:nth-child(7) {
+            animation-delay: 0.35s;
+        }
+
+        .hero-card:nth-child(8) {
+            animation-delay: 0.4s;
+        }
+
+        /* --- BIO (Full-width, outside container) --- */
+        .bio-section {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            background: linear-gradient(135deg, #111111, #1a1a1a);
+            min-height: 500px;
+        }
+
+        .bio-photo {
+            width: 45%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            max-width: none;
+            height: auto;
+            -webkit-mask-image: linear-gradient(to right, black 70%, transparent 100%);
+            mask-image: linear-gradient(to right, black 70%, transparent 100%);
+        }
+
+        .bio-text {
+            width: 55%;
+            padding: 60px 60px 60px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .bio-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1A73E8;
+            margin-bottom: 28px;
+            display: block;
+        }
+
+        .bio-paragraphs p {
+            color: #ffffff;
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-weight: 400;
+            max-width: 520px;
+        }
+
+        .bio-paragraphs p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- SOCIALS --- */
+        .socials {
+            display: flex;
+            justify-content: center;
+            gap: 28px;
+            padding: 16px 16px 32px;
+        }
+
+        .soc-link {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .soc-link:hover {
+            transform: scale(1.18);
+            background: rgba(26, 115, 232, 0.12);
+        }
+
+        .soc-link svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
+            transition: fill 0.2s;
+        }
+
+        .soc-link:hover svg {
+            fill: var(--accent);
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            background: #000000;
+            border-top: 1px solid #222;
+            padding: 20px 16px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            font-size: 0.75rem;
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-links .sep {
+            color: #ffffff;
+            font-size: 0.75rem;
+        }
+
+        .site-footer .copy {
+            font-size: 0.85rem;
+            color: #ffffff;
+        }
+
+        /* ===== RESPONSIVE — MOBILE (320px to 767px) ===== */
+        @media (max-width: 767px) {
+            .pub-wrap {
+                padding: 0;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .logo-img {
+                width: 140px;
+            }
+
+            .logo-bar {
+                height: 24px;
+            }
+
+            .hero-card {
+                border-radius: 16px;
+            }
+
+            .card-image-wrapper {
+                height: 220px;
+            }
+
+            .card-title {
+                font-size: 1.6rem;
+            }
+
+            .card-subtitle {
+                font-size: 0.75rem;
+            }
+
+            .card-cta {
+                width: 85%;
+                font-size: 0.9rem;
+                padding: 14px 0;
+            }
+
+            .bio-section {
+                flex-direction: column;
+            }
+
+            .bio-photo {
+                width: 100%;
+                height: 300px;
+                -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            }
+
+            .bio-text {
+                width: 100%;
+                padding: 24px 20px;
+            }
+
+            .bio-name {
+                font-size: 1.4rem;
+            }
+
+            .bio-paragraphs p {
+                font-size: 0.95rem;
+            }
+
+            .socials {
+                gap: 20px;
+            }
+
+            .soc-link svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        /* ===== RESPONSIVE — TABLET (768px to 1279px) ===== */
+        @media (min-width: 768px) and (max-width: 1279px) {
+            .pub-wrap {
+                padding: 0 24px;
+            }
+
+            .logo-img {
+                width: 180px;
+            }
+
+            .card-image-wrapper {
+                height: 280px;
+            }
+
+            .card-title {
+                font-size: 2rem;
+            }
+
+            .card-cta {
+                width: 78%;
+            }
+
+            .bio-photo {
+                width: 42%;
+            }
+
+            .bio-text {
+                width: 58%;
+                padding: 40px 40px 40px 16px;
+            }
+        }
+
+        /* ===== RESPONSIVE — DESKTOP (1280px+) ===== */
+        @media (min-width: 1280px) {
+            .pub-wrap {
+                max-width: 580px;
+                margin: 0 auto;
+            }
+
+            .logo-img {
+                width: 220px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .logo-bar {
+                height: 32px;
+            }
+
+            .card-image-wrapper {
+                height: 340px;
+            }
+
+            .card-title {
+                font-size: 2.5rem;
+            }
+
+            .card-cta {
+                width: 75%;
+            }
+
+            .bio-photo {
+                width: 45%;
+            }
+
+            .bio-text {
+                width: 55%;
+                padding: 60px 60px 60px 20px;
+            }
+
+            .bio-name {
+                font-size: 2rem;
+            }
+
+            .cards {
+                padding: 0;
+            }
+
+            .site-header {
+                padding: 40px 0 32px;
+            }
+
+            .socials {
+                padding: 18px 0 36px;
+            }
+
+            .site-footer {
+                padding: 22px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pub-wrap">
+
+        <!-- HEADER -->
+        <header class="site-header">
+            <div class="logo" id="logoText">
+                <span class="logo-bar"></span>
+                <span class="logo-name">Matheus Daia</span>
+            </div>
+        </header>
+
+        <!-- CARDS -->
+        <div class="cards" id="cardsContainer"></div>
+
+        <!-- SOCIALS -->
+        <div class="socials" id="socialsRow">
+            <a href="#" id="socIG" class="soc-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm5.25-2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z" />
+                </svg>
+            </a>
+            <a href="#" id="socYT" class="soc-link" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M21.8 8a2.75 2.75 0 0 0-1.94-1.95C18.15 5.5 12 5.5 12 5.5s-6.15 0-7.87.55A2.75 2.75 0 0 0 2.2 8 28.87 28.87 0 0 0 1.75 12c0 1.36.15 2.72.45 4a2.75 2.75 0 0 0 1.94 1.95c1.71.55 7.86.55 7.86.55s6.15 0 7.87-.55A2.75 2.75 0 0 0 21.8 16c.3-1.28.45-2.64.45-4s-.15-2.72-.45-4ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z" />
+                </svg>
+            </a>
+            <a href="#" id="socWA" class="soc-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.49 2 12c0 1.76.46 3.48 1.34 5L2 22l5.23-1.24A9.96 9.96 0 0 0 12 22c5.52 0 10-4.49 10-10S17.52 2 12 2Zm0 1.5a8.46 8.46 0 0 1 8.5 8.5 8.46 8.46 0 0 1-8.5 8.5 8.44 8.44 0 0 1-4.25-1.15l-.3-.18-3.16.75.85-3.1-.2-.32A8.44 8.44 0 0 1 3.5 12 8.46 8.46 0 0 1 12 3.5ZM8.6 7.3a.87.87 0 0 0-.64.3c-.22.24-.84.82-.84 2 0 1.18.86 2.33.98 2.49.12.16 1.7 2.59 4.11 3.63.58.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.43-.59 1.63-1.15.2-.56.2-1.05.14-1.15-.06-.1-.22-.16-.46-.28-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06-.24-.12-1.01-.37-1.93-1.19-.71-.64-1.2-1.42-1.34-1.66-.14-.24-.01-.37.11-.49.1-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.39-.4-.54-.41-.14-.01-.3-.01-.46-.01Z" />
+                </svg>
+            </a>
+            <a href="#" id="socTK" class="soc-link" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z" />
+                </svg>
+            </a>
+        </div>
+
+    </div>
+    <!-- pub-wrap ends — bio is OUTSIDE for full width -->
+
+    <!-- BIO SECTION (full width) -->
+    <section class="bio-section" id="bioSection">
+        <img src="" class="bio-photo" id="bioPhoto" alt="Bio Photo" />
+        <div class="bio-text">
+            <span class="bio-name" id="bioName">Matheus Daia.</span>
+            <div class="bio-paragraphs" id="bioText"></div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="#">Aviso de Privacidade</a>
+            <span class="sep">|</span>
+            <a href="#">Termos de Uso</a>
+        </div>
+        <p class="copy">© 2026 Matheus Daia – Destrave Academy LTDA</p>
+    </footer>
+
+    <script>
+        (() => {
+            'use strict';
+
+            // ===== LOCALSTORAGE KEYS (shared with admin.html) =====
+            const KEYS = {
+                cards: 'ltb_cards',
+                logo: 'ltb_logo',
+                bio: 'ltb_bio',
+                socials: 'ltb_socials'
+            };
+
+            // ===== DEFAULTS =====
+            const DEFAULT_CARDS = [
+                { img: '', tag: 'ACESSE AGORA', title: 'MINHA MENTORIA', sub: 'Transforme seus resultados com IA e automação', cta: 'QUERO ACESSAR', url: '#', on: true },
+                { img: '', tag: 'SIGA-ME', title: 'INSTAGRAM', sub: '@omatheus.ai • 335k seguidores', cta: 'SEGUIR AGORA', url: '#', on: true },
+                { img: '', tag: 'INSCREVA-SE', title: 'CANAL DO YOUTUBE', sub: 'Conteúdo sobre IA, automação e produtividade', cta: 'ACESSAR CANAL', url: '#', on: true },
+                { img: '', tag: 'FALE COMIGO', title: 'WHATSAPP', sub: 'Entre em contato direto', cta: 'CHAMAR AGORA', url: '#', on: true },
+                { img: '', tag: 'MATRICULE-SE', title: 'MEU CURSO', sub: 'Aprenda IA e automação do zero ao avançado', cta: 'GARANTIR VAGA', url: '#', on: true },
+                { img: '', tag: 'OUÇA AGORA', title: 'PODCAST', sub: 'Episódios sobre IA, negócios e produtividade', cta: 'OUVIR EPISÓDIOS', url: '#', on: true },
+                { img: '', tag: 'CONFIRA', title: 'PORTFÓLIO', sub: 'Veja meus projetos e cases de sucesso', cta: 'VER PORTFÓLIO', url: '#', on: true },
+                { img: '', tag: 'ACESSE', title: 'MINHA LOJA', sub: 'Ferramentas e recursos para criadores', cta: 'ACESSAR LOJA', url: '#', on: true }
+            ];
+
+            const DEFAULT_BIO = { name: 'Matheus Daia', text: 'Criador de conteúdo especializado em IA e automação.\n\nFundador da Destrave Academy.\n\nAjudo criadores e empresas a crescerem com tecnologia.', photo: '' };
+            const DEFAULT_SOCIALS = { instagram: '#', youtube: '#', whatsapp: '#', tiktok: '#' };
+            const DEFAULT_LOGO = '';
+
+            // ===== LOAD FROM LOCALSTORAGE =====
+            function loadJSON(key, fallback) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) { }
+                return fallback;
+            }
+
+            // ===== MIGRATE from old key =====
+            function migrateOldData() {
+                const oldKey = 'md_linktree';
+                const oldRaw = localStorage.getItem(oldKey);
+                if (!oldRaw) return;
+                try {
+                    const old = JSON.parse(oldRaw);
+                    // Only migrate if new keys don't exist yet
+                    if (!localStorage.getItem(KEYS.cards) && Array.isArray(old.cards)) {
+                        localStorage.setItem(KEYS.cards, JSON.stringify(old.cards));
+                    }
+                    if (!localStorage.getItem(KEYS.logo) && old.logoImg) {
+                        localStorage.setItem(KEYS.logo, JSON.stringify(old.logoImg));
+                    }
+                    if (!localStorage.getItem(KEYS.bio)) {
+                        localStorage.setItem(KEYS.bio, JSON.stringify({
+                            name: old.bio?.name || 'Matheus Daia',
+                            text: old.bio?.text || '',
+                            photo: old.bioImg || ''
+                        }));
+                    }
+                    if (!localStorage.getItem(KEYS.socials) && old.socials) {
+                        localStorage.setItem(KEYS.socials, JSON.stringify({
+                            instagram: old.socials.ig || '#',
+                            youtube: old.socials.yt || '#',
+                            whatsapp: old.socials.wa || '#',
+                            tiktok: old.socials.tk || '#'
+                        }));
+                    }
+                } catch (e) { }
+            }
+
+            // ===== DOM HELPERS =====
+            const $ = id => document.getElementById(id);
+            const esc = s => { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; };
+
+            // ===== RENDER =====
+            function render() {
+                migrateOldData();
+
+                const cards = loadJSON(KEYS.cards, DEFAULT_CARDS);
+                const logoImg = loadJSON(KEYS.logo, DEFAULT_LOGO);
+                const bio = loadJSON(KEYS.bio, DEFAULT_BIO);
+                const socials = loadJSON(KEYS.socials, DEFAULT_SOCIALS);
+
+                // -- Logo --
+                const logoEl = $('logoText');
+                if (logoImg) {
+                    logoEl.innerHTML = `<img src="${esc(logoImg)}" class="logo-img" alt="Logo" />`;
+                } else {
+                    logoEl.innerHTML = `<span class="logo-bar"></span><span class="logo-name">Matheus Daia</span>`;
+                }
+
+                // -- Cards --
+                const ct = $('cardsContainer');
+                ct.innerHTML = '';
+                cards.forEach((c, i) => {
+                    if (c.on === false) return; // skip hidden cards
+                    const div = document.createElement('div');
+                    div.className = 'hero-card';
+                    div.dataset.i = i;
+                    const imageHTML = c.img
+                        ? `<img src="${esc(c.img)}" class="card-image" alt="${esc(c.title)}" />`
+                        : `<div class="card-image-placeholder"></div>`;
+                    div.innerHTML = `
+                    <div class="card-image-wrapper">${imageHTML}</div>
+                    <div class="card-content">
+                        <span class="card-tag">${esc(c.tag)}</span>
+                        <h2 class="card-title">${esc(c.title)}</h2>
+                        <p class="card-subtitle">${esc(c.sub)}</p>
+                        <a href="${esc(c.url)}" class="card-cta" target="_blank" rel="noopener noreferrer">${esc(c.cta)}</a>
+                    </div>`;
+                    ct.appendChild(div);
+                });
+
+                // -- Bio --
+                $('bioName').textContent = bio.name || 'Matheus Daia';
+
+                const bioTextEl = $('bioText');
+                bioTextEl.innerHTML = '';
+                const rawBioText = bio.text || '';
+                let paragraphs = rawBioText.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+
+                // Fallback: split by ". " followed by uppercase
+                if (paragraphs.length <= 1 && rawBioText.length > 120) {
+                    paragraphs = rawBioText
+                        .split(/\.\s+(?=[A-ZÁÀÃÂÉÊÍÓÔÕÚÇ])/)
+                        .map((p, i, arr) => (i < arr.length - 1 ? p.trim() + '.' : p.trim()))
+                        .filter(p => p.length > 0);
+                }
+                if (paragraphs.length === 0 && rawBioText.trim()) {
+                    paragraphs = [rawBioText.trim()];
+                }
+                paragraphs.forEach(p => {
+                    const pEl = document.createElement('p');
+                    pEl.textContent = p;
+                    bioTextEl.appendChild(pEl);
+                });
+
+                // Bio photo: hide entirely when no image
+                const bioPhotoEl = $('bioPhoto');
+                const bioPhoto = bio.photo || '';
+                if (bioPhoto) {
+                    bioPhotoEl.src = bioPhoto;
+                    bioPhotoEl.style.display = 'block';
+                } else {
+                    bioPhotoEl.style.display = 'none';
+                }
+
+                // -- Socials --
+                $('socIG').href = socials.instagram || '#';
+                $('socYT').href = socials.youtube || '#';
+                $('socWA').href = socials.whatsapp || '#';
+                $('socTK').href = socials.tiktok || '#';
+            }
+
+            // ===== INIT =====
+            document.addEventListener('DOMContentLoaded', render);
+            window.addEventListener('resize', render);
+        })();
+    </script>
+
+</body>
+
+</html>

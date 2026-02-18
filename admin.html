@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — Matheus Daia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #000000;
+            --card-bg: #1a1a1a;
+            --text: #ffffff;
+            --text-dim: #b3b3b3;
+            --accent: #1A73E8;
+            --accent-hover: #1557b0;
+            --border: #333333;
+            --error: #e74c3c;
+            --success: #27ae60;
+            --font: 'Montserrat', sans-serif;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        input,
+        textarea,
+        button {
+            font-family: var(--font);
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .admin-page {
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 16px 64px;
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN ===== */
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px 28px;
+            max-width: 420px;
+            margin: 60px auto 0;
+            width: 100%;
+        }
+
+        .login-box h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-err {
+            color: var(--error);
+            font-size: 0.82rem;
+            text-align: center;
+            margin-bottom: 12px;
+            display: none;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: var(--text-dim);
+            font-size: 0.82rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .fg {
+            margin-bottom: 16px;
+        }
+
+        .fg label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .fg input,
+        .fg textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.88rem;
+            transition: border-color 0.2s;
+        }
+
+        .fg input:focus,
+        .fg textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .fg textarea {
+            resize: vertical;
+            min-height: 72px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-blue {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 48px;
+            padding: 12px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-blue:hover {
+            background: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        .btn-blue:active {
+            transform: scale(0.98);
+        }
+
+        .btn-green {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 48px;
+            padding: 12px;
+            background: var(--success);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .btn-green:hover {
+            background: #219a52;
+            transform: scale(1.02);
+        }
+
+        .btn-out {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-dim);
+            padding: 7px 18px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-out:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .btn-delete {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 42px;
+            padding: 10px;
+            background: transparent;
+            color: var(--error);
+            border: 1px solid var(--error);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+            margin-top: 12px;
+        }
+
+        .btn-delete:hover {
+            background: var(--error);
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .btn-delete:active {
+            transform: scale(0.97);
+        }
+
+        .btn-add-card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 48px;
+            padding: 12px;
+            background: transparent;
+            color: var(--accent);
+            border: 2px dashed var(--accent);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, transform 0.2s;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+
+        .btn-add-card:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-add-card:active {
+            transform: scale(0.97);
+        }
+
+        .btn-upload {
+            flex-shrink: 0;
+            margin-top: 20px;
+            padding: 11px 16px;
+            background: var(--card-bg);
+            color: var(--text-dim);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-upload:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ===== DASHBOARD ===== */
+        .adm-wrap {
+            width: 100%;
+            max-width: 680px;
+        }
+
+        .adm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .adm-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .adm-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 22px;
+        }
+
+        .adm-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+        }
+
+        .adm-card .btn-blue {
+            margin-top: 14px;
+        }
+
+        .save-ok {
+            text-align: center;
+            font-size: 0.78rem;
+            color: var(--success);
+            margin-top: 6px;
+            min-height: 18px;
+        }
+
+        /* ===== IMAGE ROW ===== */
+        .img-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .img-row .fg {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .img-preview {
+            width: 60px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: cover;
+            flex-shrink: 0;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        .img-preview.has-img {
+            display: block;
+        }
+
+        .logo-preview {
+            width: 120px;
+            height: 60px;
+            border-radius: 6px;
+            object-fit: contain;
+            flex-shrink: 0;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+            background: #111;
+            display: none;
+        }
+
+        .logo-preview.has-img {
+            display: block;
+        }
+
+        .img-hint {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            margin-top: 6px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        /* ===== CARD EDITOR ===== */
+        .ce {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 14px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .ce-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .ce-top span {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .ce-drag-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .drag-handle {
+            font-size: 1.2rem;
+            color: #666;
+            cursor: grab;
+            user-select: none;
+            padding: 4px 8px;
+            line-height: 1;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .ce-move-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-move {
+            background: #222;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-move:hover {
+            background: #333;
+        }
+
+        .ce.drag-over {
+            border: 2px dashed var(--accent);
+        }
+
+        .ce.dragging {
+            opacity: 0.4;
+        }
+
+        .tog-wrap {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .tog-lbl {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+        }
+
+        .tog {
+            position: relative;
+            width: 38px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #333;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s;
+            outline: none;
+            border: none;
+        }
+
+        .tog:checked {
+            background: var(--accent);
+        }
+
+        .tog::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .tog:checked::before {
+            transform: translateX(18px);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            color: var(--text);
+            padding: 12px 22px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== CONFIRM MODAL ===== */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.65);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+
+        .confirm-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .confirm-modal {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 28px 24px 22px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.92);
+            transition: transform 0.25s ease;
+        }
+
+        .confirm-overlay.show .confirm-modal {
+            transform: scale(1);
+        }
+
+        .confirm-modal p {
+            font-size: 0.92rem;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .confirm-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .confirm-btns button {
+            flex: 1;
+            padding: 12px 16px;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            min-height: 44px;
+        }
+
+        .btn-cancel-modal {
+            background: transparent;
+            border: 1px solid #fff;
+            color: #fff;
+        }
+
+        .btn-cancel-modal:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn-confirm-delete {
+            background: #dc2626;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-confirm-delete:hover {
+            background: #b91c1c;
+            transform: scale(1.03);
+        }
+
+        .btn-confirm-delete:active,
+        .btn-cancel-modal:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 28px 18px;
+                margin-top: 40px;
+            }
+
+            .adm-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========= LOGIN ========= -->
+    <div id="loginPage" class="page admin-page active">
+        <div class="login-box">
+            <h2>Painel Admin</h2>
+            <p class="login-err" id="loginErr">E-mail ou senha incorretos.</p>
+            <div class="fg">
+                <label for="inEmail">E-mail</label>
+                <input type="email" id="inEmail" placeholder="admin@matheus.com" autocomplete="email" />
+            </div>
+            <div class="fg">
+                <label for="inPass">Senha</label>
+                <input type="password" id="inPass" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <button class="btn-blue" id="btnLogin">ENTRAR</button>
+            <a href="index.html" class="back-link">← Voltar à página</a>
+        </div>
+    </div>
+
+    <!-- ========= DASHBOARD ========= -->
+    <div id="dashPage" class="page admin-page">
+        <div class="adm-wrap">
+
+            <div class="adm-header">
+                <h2>Dashboard</h2>
+                <div style="display:flex;gap:10px;align-items:center;">
+                    <button class="btn-out" id="btnView" style="border-color:var(--accent);color:var(--accent);">👁
+                        VISUALIZAR PÁGINA</button>
+                    <button class="btn-out" id="btnLogout">SAIR</button>
+                </div>
+            </div>
+
+            <!-- Section 1 — Header / Logo -->
+            <div class="adm-card">
+                <h3>Header / Logo</h3>
+                <div class="fg">
+                    <label for="aLogo">Texto do Logo</label>
+                    <input type="text" id="aLogo" />
+                </div>
+                <label
+                    style="display:block;font-size:0.75rem;font-weight:600;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;margin-top:14px;letter-spacing:0.5px;">Logo
+                    do Topo (Imagem)</label>
+                <div class="img-row">
+                    <div class="fg"><input type="text" id="aLogoImg" placeholder="Cole a URL da logo…" /></div>
+                    <button type="button" class="btn-upload" id="btnUploadLogo">📁 Subir</button>
+                    <input type="file" accept="image/*" id="fileLogoImg" style="display:none" />
+                    <img src="" class="logo-preview" id="logoPreview" alt="Logo Preview" />
+                </div>
+                <p class="img-hint">💡 Recomendado: 300 × 80px — PNG transparente, máx 1MB</p>
+                <button class="btn-blue" id="btnSaveHeader">SALVAR HEADER</button>
+                <div class="save-ok" id="okHeader"></div>
+            </div>
+
+            <!-- Section 2 — Cards -->
+            <div class="adm-card">
+                <h3 id="cardsTitle">Cards de Link</h3>
+                <div id="cardEditors"></div>
+                <button type="button" class="btn-add-card" id="btnAddCard">➕ NOVO CARD</button>
+                <button class="btn-blue" id="btnSaveCards">SALVAR CARDS</button>
+                <div class="save-ok" id="okCards"></div>
+            </div>
+
+            <!-- Section 3 — Socials -->
+            <div class="adm-card">
+                <h3>Redes Sociais</h3>
+                <div class="fg"><label for="aIG">Instagram URL</label><input type="text" id="aIG"
+                        placeholder="https://instagram.com/..." /></div>
+                <div class="fg"><label for="aYT">YouTube URL</label><input type="text" id="aYT"
+                        placeholder="https://youtube.com/..." /></div>
+                <div class="fg"><label for="aWA">WhatsApp URL</label><input type="text" id="aWA"
+                        placeholder="https://wa.me/..." /></div>
+                <div class="fg"><label for="aTK">TikTok URL</label><input type="text" id="aTK"
+                        placeholder="https://tiktok.com/@..." /></div>
+                <button class="btn-blue" id="btnSaveSoc">SALVAR REDES</button>
+                <div class="save-ok" id="okSoc"></div>
+            </div>
+
+            <!-- Section 4 — Bio -->
+            <div class="adm-card">
+                <h3>Bio</h3>
+                <label
+                    style="display:block;font-size:0.75rem;font-weight:600;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px;letter-spacing:0.5px;">Foto
+                    da Bio</label>
+                <div class="img-row">
+                    <div class="fg"><input type="text" id="aBioImg" placeholder="Cole a URL da foto…" /></div>
+                    <button type="button" class="btn-upload" id="btnUploadBio">📁 Subir</button>
+                    <input type="file" accept="image/*" id="fileBioImg" style="display:none" />
+                    <img src=""
+                        style="width:80px;height:80px;border-radius:6px;object-fit:cover;flex-shrink:0;margin-top:20px;border:1px solid var(--border);display:none;"
+                        id="bioImgPreview" alt="Bio Preview" />
+                </div>
+                <p class="img-hint">💡 Recomendado: 600 × 800px — PNG ou JPG — Máx 2MB</p>
+                <div class="fg"><label for="aBioName">Nome em Destaque</label><input type="text" id="aBioName" /></div>
+                <div class="fg"><label for="aBioText">Parágrafos da Bio (separe com linha em branco)</label><textarea
+                        id="aBioText" style="min-height:140px;"></textarea></div>
+                <p style="font-size:0.8rem;color:#888;margin-top:-10px;margin-bottom:16px;line-height:1.4;">💡 Separe
+                    cada parágrafo com uma linha em branco (Enter duas vezes)</p>
+                <button class="btn-blue" id="btnSaveBio">SALVAR BIO</button>
+                <div class="save-ok" id="okBio"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Confirm Delete Modal -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-modal">
+            <p>Tem certeza que deseja excluir este card? Esta ação não pode ser desfeita.</p>
+            <div class="confirm-btns">
+                <button class="btn-cancel-modal" id="btnCancelDel">CANCELAR</button>
+                <button class="btn-confirm-delete" id="btnConfirmDel">EXCLUIR</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (() => {
+            'use strict';
+
+            // ===== AUTH CONFIG =====
+            const ADMIN_EMAIL = 'admin@matheus.com';
+            const ADMIN_PASS = 'admin123';
+            const SESSION_KEY = 'adminLoggedIn';
+
+            // ===== LOCALSTORAGE KEYS (shared with index.html) =====
+            const KEYS = {
+                cards: 'ltb_cards',
+                logo: 'ltb_logo',
+                bio: 'ltb_bio',
+                socials: 'ltb_socials'
+            };
+
+            // ===== DEFAULTS =====
+            const DEFAULT_CARDS = [
+                { img: '', tag: 'ACESSE AGORA', title: 'MINHA MENTORIA', sub: 'Transforme seus resultados com IA e automação', cta: 'QUERO ACESSAR', url: '#', on: true },
+                { img: '', tag: 'SIGA-ME', title: 'INSTAGRAM', sub: '@omatheus.ai • 335k seguidores', cta: 'SEGUIR AGORA', url: '#', on: true },
+                { img: '', tag: 'INSCREVA-SE', title: 'CANAL DO YOUTUBE', sub: 'Conteúdo sobre IA, automação e produtividade', cta: 'ACESSAR CANAL', url: '#', on: true },
+                { img: '', tag: 'FALE COMIGO', title: 'WHATSAPP', sub: 'Entre em contato direto', cta: 'CHAMAR AGORA', url: '#', on: true },
+                { img: '', tag: 'MATRICULE-SE', title: 'MEU CURSO', sub: 'Aprenda IA e automação do zero ao avançado', cta: 'GARANTIR VAGA', url: '#', on: true },
+                { img: '', tag: 'OUÇA AGORA', title: 'PODCAST', sub: 'Episódios sobre IA, negócios e produtividade', cta: 'OUVIR EPISÓDIOS', url: '#', on: true },
+                { img: '', tag: 'CONFIRA', title: 'PORTFÓLIO', sub: 'Veja meus projetos e cases de sucesso', cta: 'VER PORTFÓLIO', url: '#', on: true },
+                { img: '', tag: 'ACESSE', title: 'MINHA LOJA', sub: 'Ferramentas e recursos para criadores', cta: 'ACESSAR LOJA', url: '#', on: true }
+            ];
+
+            const DEFAULT_BIO = { name: 'Matheus Daia', text: 'Criador de conteúdo especializado em IA e automação.\n\nFundador da Destrave Academy.\n\nAjudo criadores e empresas a crescerem com tecnologia.', photo: '' };
+            const DEFAULT_SOCIALS = { instagram: '#', youtube: '#', whatsapp: '#', tiktok: '#' };
+
+            // ===== HELPERS =====
+            const $ = id => document.getElementById(id);
+            const esc = s => { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; };
+
+            function loadJSON(key, fallback) {
+                try { const r = localStorage.getItem(key); if (r) return JSON.parse(r); } catch (e) { }
+                return JSON.parse(JSON.stringify(fallback));
+            }
+            function saveJSON(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+
+            function toast(m) { const t = $('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+            function fb(el, m) { el.textContent = m; setTimeout(() => el.textContent = '', 3000); }
+
+            function go(id) {
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                $(id).classList.add('active');
+                window.scrollTo(0, 0);
+            }
+
+            // ===== MIGRATE OLD DATA =====
+            function migrateOldData() {
+                const oldKey = 'md_linktree';
+                const oldRaw = localStorage.getItem(oldKey);
+                if (!oldRaw) return;
+                try {
+                    const old = JSON.parse(oldRaw);
+                    if (!localStorage.getItem(KEYS.cards) && Array.isArray(old.cards)) {
+                        saveJSON(KEYS.cards, old.cards);
+                    }
+                    if (!localStorage.getItem(KEYS.logo) && old.logoImg) {
+                        saveJSON(KEYS.logo, old.logoImg);
+                    }
+                    if (!localStorage.getItem(KEYS.bio)) {
+                        saveJSON(KEYS.bio, {
+                            name: old.bio?.name || 'Matheus Daia',
+                            text: old.bio?.text || '',
+                            photo: old.bioImg || ''
+                        });
+                    }
+                    if (!localStorage.getItem(KEYS.socials) && old.socials) {
+                        saveJSON(KEYS.socials, {
+                            instagram: old.socials.ig || '#',
+                            youtube: old.socials.yt || '#',
+                            whatsapp: old.socials.wa || '#',
+                            tiktok: old.socials.tk || '#'
+                        });
+                    }
+                } catch (e) { }
+            }
+
+            // ===== CURRENT DATA =====
+            migrateOldData();
+            let cards = loadJSON(KEYS.cards, DEFAULT_CARDS);
+            let bio = loadJSON(KEYS.bio, DEFAULT_BIO);
+            let socials = loadJSON(KEYS.socials, DEFAULT_SOCIALS);
+            let logoImg = loadJSON(KEYS.logo, '');
+
+            // ===== AUTH =====
+            function checkSession() {
+                return localStorage.getItem(SESSION_KEY) === 'true';
+            }
+
+            function handleLogin() {
+                const email = $('inEmail').value.trim();
+                const pass = $('inPass').value;
+
+                if (!email || !pass) {
+                    $('loginErr').textContent = 'Preencha todos os campos.';
+                    $('loginErr').style.display = 'block';
+                    return;
+                }
+
+                if (email === ADMIN_EMAIL && pass === ADMIN_PASS) {
+                    localStorage.setItem(SESSION_KEY, 'true');
+                    $('loginErr').style.display = 'none';
+                    $('inEmail').value = '';
+                    $('inPass').value = '';
+                    renderAdmin();
+                    go('dashPage');
+                    toast('Login realizado!');
+                } else {
+                    $('loginErr').textContent = 'E-mail ou senha incorretos.';
+                    $('loginErr').style.display = 'block';
+                }
+            }
+
+            function handleLogout() {
+                localStorage.removeItem(SESSION_KEY);
+                go('loginPage');
+                toast('Você saiu do painel.');
+            }
+
+            // ===== RENDER ADMIN =====
+            function renderAdmin() {
+                // Reload data
+                cards = loadJSON(KEYS.cards, DEFAULT_CARDS);
+                bio = loadJSON(KEYS.bio, DEFAULT_BIO);
+                socials = loadJSON(KEYS.socials, DEFAULT_SOCIALS);
+                logoImg = loadJSON(KEYS.logo, '');
+
+                // Header
+                $('aLogo').value = '';
+                // Logo image
+                const logoPrev = $('logoPreview');
+                $('aLogoImg').value = logoImg && !logoImg.startsWith('data:') ? logoImg : '';
+                if (logoImg) {
+                    logoPrev.src = logoImg;
+                    logoPrev.classList.add('has-img');
+                } else {
+                    logoPrev.src = '';
+                    logoPrev.classList.remove('has-img');
+                }
+
+                // Socials
+                $('aIG').value = socials.instagram || '';
+                $('aYT').value = socials.youtube || '';
+                $('aWA').value = socials.whatsapp || '';
+                $('aTK').value = socials.tiktok || '';
+
+                // Bio
+                $('aBioName').value = bio.name || '';
+                $('aBioText').value = bio.text || '';
+                const bioImgPrev = $('bioImgPreview');
+                $('aBioImg').value = bio.photo && !bio.photo.startsWith('data:') ? bio.photo : '';
+                if (bio.photo) {
+                    bioImgPrev.src = bio.photo;
+                    bioImgPrev.style.display = 'block';
+                } else {
+                    bioImgPrev.src = '';
+                    bioImgPrev.style.display = 'none';
+                }
+
+                // Card count
+                $('cardsTitle').textContent = `Cards de Link (${cards.length})`;
+
+                // Cards
+                const box = $('cardEditors');
+                box.innerHTML = '';
+                cards.forEach((c, i) => {
+                    const hasPreview = c.img && c.img.length > 0;
+                    const d = document.createElement('div');
+                    d.className = 'ce';
+                    d.draggable = true;
+                    d.dataset.idx = i;
+                    const showUp = i > 0;
+                    const showDown = i < cards.length - 1;
+                    d.innerHTML = `
+  <div class="ce-drag-bar">
+    <span class="drag-handle" title="Arrastar para reordenar">⠿</span>
+    <div class="ce-move-btns">
+      ${showUp ? `<button type="button" class="btn-move btn-move-up" data-i="${i}">▲ CIMA</button>` : ''}
+      ${showDown ? `<button type="button" class="btn-move btn-move-down" data-i="${i}">▼ BAIXO</button>` : ''}
+    </div>
+  </div>
+  <div class="ce-top">
+    <span>Card ${i + 1}</span>
+    <div class="tog-wrap">
+      <span class="tog-lbl">Visível</span>
+      <input type="checkbox" class="tog" data-f="on" data-i="${i}" ${c.on ? 'checked' : ''} />
+    </div>
+  </div>
+  <div class="img-row">
+    <div class="fg"><label>Imagem de Fundo</label><input type="text" data-f="img" data-i="${i}" value="${esc(c.img && !c.img.startsWith('data:') ? c.img : '')}" placeholder="Cole a URL da imagem…" /></div>
+    <button type="button" class="btn-upload" data-i="${i}">📁 Subir</button>
+    <input type="file" accept="image/*" data-i="${i}" class="file-input" style="display:none" />
+    <img src="${hasPreview ? c.img : ''}" class="img-preview${hasPreview ? ' has-img' : ''}" data-i="${i}" alt="Preview" />
+  </div>
+  <p class="img-hint">💡 Recomendado: 580 × 380px — JPG ou PNG, máx 2MB</p>
+  <div class="fg"><label>Tag</label><input type="text" data-f="tag" data-i="${i}" value="${esc(c.tag)}" /></div>
+  <div class="fg"><label>Título Grande</label><input type="text" data-f="title" data-i="${i}" value="${esc(c.title)}" /></div>
+  <div class="fg"><label>Subtítulo / Descrição</label><textarea data-f="sub" data-i="${i}">${esc(c.sub)}</textarea></div>
+  <div class="fg"><label>Texto do Botão CTA</label><input type="text" data-f="cta" data-i="${i}" value="${esc(c.cta)}" /></div>
+  <div class="fg"><label>URL de Destino</label><input type="text" data-f="url" data-i="${i}" value="${esc(c.url)}" /></div>
+  <button type="button" class="btn-delete" data-del="${i}">🗑 EXCLUIR CARD</button>`;
+                    box.appendChild(d);
+                });
+
+                // Real-time sync for toggle/text
+                box.querySelectorAll('[data-f][data-i]').forEach(el => {
+                    const f = el.dataset.f;
+                    const idx = +el.dataset.i;
+                    if (f === 'on') {
+                        el.addEventListener('change', () => {
+                            cards[idx].on = el.checked;
+                            saveJSON(KEYS.cards, cards);
+                        });
+                    } else if (f !== 'img') {
+                        el.addEventListener('input', () => {
+                            cards[idx][f] = el.value;
+                        });
+                    }
+                });
+
+                // File upload buttons
+                box.querySelectorAll('.btn-upload').forEach(btn => {
+                    btn.addEventListener('click', () => btn.nextElementSibling.click());
+                });
+
+                // File inputs → base64
+                box.querySelectorAll('.file-input').forEach(fi => {
+                    fi.addEventListener('change', e => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        const idx = +fi.dataset.i;
+                        const reader = new FileReader();
+                        reader.onload = ev => {
+                            const b64 = ev.target.result;
+                            cards[idx].img = b64;
+                            const prev = fi.nextElementSibling;
+                            prev.src = b64;
+                            prev.classList.add('has-img');
+                            const urlInput = fi.parentElement.querySelector('[data-f="img"]');
+                            if (urlInput) urlInput.value = '';
+                            saveJSON(KEYS.cards, cards);
+                            toast('Imagem carregada!');
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                // URL input → preview
+                box.querySelectorAll('[data-f="img"]').forEach(inp => {
+                    inp.addEventListener('input', () => {
+                        const idx = +inp.dataset.i;
+                        const row = inp.closest('.img-row');
+                        const prev = row.querySelector('.img-preview');
+                        const val = inp.value.trim();
+                        if (val) {
+                            prev.src = val;
+                            prev.classList.add('has-img');
+                            cards[idx].img = val;
+                        } else {
+                            prev.src = '';
+                            prev.classList.remove('has-img');
+                            cards[idx].img = '';
+                        }
+                    });
+                });
+
+                // Delete buttons
+                let pendingDeleteIdx = -1;
+                box.querySelectorAll('.btn-delete').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        pendingDeleteIdx = +btn.dataset.del;
+                        $('confirmOverlay').classList.add('show');
+                    });
+                });
+
+                // Move up/down
+                box.querySelectorAll('.btn-move-up').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = +btn.dataset.i;
+                        if (idx <= 0) return;
+                        [cards[idx - 1], cards[idx]] = [cards[idx], cards[idx - 1]];
+                        saveJSON(KEYS.cards, cards);
+                        renderAdmin();
+                        toast('✅ Ordem salva!');
+                    });
+                });
+                box.querySelectorAll('.btn-move-down').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const idx = +btn.dataset.i;
+                        if (idx >= cards.length - 1) return;
+                        [cards[idx], cards[idx + 1]] = [cards[idx + 1], cards[idx]];
+                        saveJSON(KEYS.cards, cards);
+                        renderAdmin();
+                        toast('✅ Ordem salva!');
+                    });
+                });
+
+                // Drag and Drop
+                let dragIdx = null;
+                box.querySelectorAll('.ce').forEach(ce => {
+                    ce.addEventListener('dragstart', e => {
+                        dragIdx = +ce.dataset.idx;
+                        ce.classList.add('dragging');
+                        e.dataTransfer.effectAllowed = 'move';
+                        e.dataTransfer.setData('text/plain', dragIdx);
+                    });
+                    ce.addEventListener('dragend', () => {
+                        ce.classList.remove('dragging');
+                        box.querySelectorAll('.ce').forEach(c => c.classList.remove('drag-over'));
+                        dragIdx = null;
+                    });
+                    ce.addEventListener('dragover', e => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        if (+ce.dataset.idx !== dragIdx) ce.classList.add('drag-over');
+                    });
+                    ce.addEventListener('dragleave', () => ce.classList.remove('drag-over'));
+                    ce.addEventListener('drop', e => {
+                        e.preventDefault();
+                        const dropIdx = +ce.dataset.idx;
+                        if (dragIdx === null || dragIdx === dropIdx) return;
+                        const moved = cards.splice(dragIdx, 1)[0];
+                        cards.splice(dropIdx, 0, moved);
+                        saveJSON(KEYS.cards, cards);
+                        renderAdmin();
+                        toast('✅ Ordem salva!');
+                    });
+                });
+
+                // Confirm modal
+                $('btnCancelDel').onclick = () => {
+                    $('confirmOverlay').classList.remove('show');
+                    pendingDeleteIdx = -1;
+                };
+                $('btnConfirmDel').onclick = () => {
+                    $('confirmOverlay').classList.remove('show');
+                    if (pendingDeleteIdx >= 0 && pendingDeleteIdx < cards.length) {
+                        cards.splice(pendingDeleteIdx, 1);
+                        saveJSON(KEYS.cards, cards);
+                        renderAdmin();
+                        toast('Card excluído!');
+                    }
+                    pendingDeleteIdx = -1;
+                };
+                $('confirmOverlay').addEventListener('click', e => {
+                    if (e.target === $('confirmOverlay')) {
+                        $('confirmOverlay').classList.remove('show');
+                        pendingDeleteIdx = -1;
+                    }
+                });
+            }
+
+            // ===== EVENT LISTENERS =====
+            $('btnLogin').addEventListener('click', handleLogin);
+            $('inPass').addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+            $('btnLogout').addEventListener('click', handleLogout);
+            $('btnView').addEventListener('click', () => window.open('index.html', '_blank'));
+
+            // Save Header
+            $('btnSaveHeader').addEventListener('click', () => {
+                const logoUrl = $('aLogoImg').value.trim();
+                if (logoUrl) logoImg = logoUrl;
+                saveJSON(KEYS.logo, logoImg);
+                fb($('okHeader'), '✓ Header salvo!');
+                toast('Header atualizado!');
+            });
+
+            // Logo upload
+            $('btnUploadLogo').addEventListener('click', () => $('fileLogoImg').click());
+            $('fileLogoImg').addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    logoImg = ev.target.result;
+                    $('logoPreview').src = logoImg;
+                    $('logoPreview').classList.add('has-img');
+                    $('aLogoImg').value = '';
+                    saveJSON(KEYS.logo, logoImg);
+                    toast('Logo carregada!');
+                };
+                reader.readAsDataURL(file);
+            });
+            $('aLogoImg').addEventListener('input', () => {
+                const val = $('aLogoImg').value.trim();
+                if (val) {
+                    $('logoPreview').src = val;
+                    $('logoPreview').classList.add('has-img');
+                    logoImg = val;
+                } else {
+                    $('logoPreview').src = '';
+                    $('logoPreview').classList.remove('has-img');
+                    logoImg = '';
+                }
+            });
+
+            // Add Card
+            $('btnAddCard').addEventListener('click', () => {
+                cards.push({ img: '', tag: '', title: '', sub: '', cta: '', url: '#', on: true });
+                saveJSON(KEYS.cards, cards);
+                renderAdmin();
+                toast('Novo card adicionado!');
+                const editors = $('cardEditors');
+                const lastCard = editors.lastElementChild;
+                if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            // Save Cards
+            $('btnSaveCards').addEventListener('click', () => {
+                saveJSON(KEYS.cards, cards);
+                fb($('okCards'), '✓ Cards salvos!');
+                toast('Cards atualizados!');
+            });
+
+            // Save Socials
+            $('btnSaveSoc').addEventListener('click', () => {
+                socials = {
+                    instagram: $('aIG').value.trim(),
+                    youtube: $('aYT').value.trim(),
+                    whatsapp: $('aWA').value.trim(),
+                    tiktok: $('aTK').value.trim()
+                };
+                saveJSON(KEYS.socials, socials);
+                fb($('okSoc'), '✓ Redes salvas!');
+                toast('Redes atualizadas!');
+            });
+
+            // Bio upload
+            $('btnUploadBio').addEventListener('click', () => $('fileBioImg').click());
+            $('fileBioImg').addEventListener('change', e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = ev => {
+                    bio.photo = ev.target.result;
+                    $('bioImgPreview').src = bio.photo;
+                    $('bioImgPreview').style.display = 'block';
+                    $('aBioImg').value = '';
+                    saveJSON(KEYS.bio, bio);
+                    toast('Foto da bio carregada!');
+                };
+                reader.readAsDataURL(file);
+            });
+            $('aBioImg').addEventListener('input', () => {
+                const val = $('aBioImg').value.trim();
+                if (val) {
+                    $('bioImgPreview').src = val;
+                    $('bioImgPreview').style.display = 'block';
+                    bio.photo = val;
+                } else {
+                    $('bioImgPreview').src = '';
+                    $('bioImgPreview').style.display = 'none';
+                    bio.photo = '';
+                }
+            });
+
+            // Save Bio
+            $('btnSaveBio').addEventListener('click', () => {
+                bio.name = $('aBioName').value.trim();
+                bio.text = $('aBioText').value;
+                const bioImgUrl = $('aBioImg').value.trim();
+                if (bioImgUrl) bio.photo = bioImgUrl;
+                saveJSON(KEYS.bio, bio);
+                fb($('okBio'), '✓ Bio salva!');
+                toast('Bio atualizada!');
+            });
+
+            // ===== INIT =====
+            if (checkSession()) {
+                renderAdmin();
+                go('dashPage');
+            } else {
+                go('loginPage');
+            }
+        })();
+    </script>
+
+</body>
+
+</html>
