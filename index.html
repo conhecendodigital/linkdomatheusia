@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap"
         rel="stylesheet" />
     <style>
-        /* ===== VARIABLES ===== */
         :root {
             --bg: #000000;
             --text: #ffffff;
@@ -261,7 +260,7 @@
             animation-delay: 0.4s;
         }
 
-        /* --- BIO (Full-width, outside container) --- */
+        /* --- BIO (Full-width) --- */
         .bio-section {
             width: 100%;
             display: flex;
@@ -381,7 +380,7 @@
             color: #ffffff;
         }
 
-        /* ===== RESPONSIVE — MOBILE (320px to 767px) ===== */
+        /* ===== RESPONSIVE — MOBILE ===== */
         @media (max-width: 767px) {
             .pub-wrap {
                 padding: 0;
@@ -455,7 +454,7 @@
             }
         }
 
-        /* ===== RESPONSIVE — TABLET (768px to 1279px) ===== */
+        /* ===== RESPONSIVE — TABLET ===== */
         @media (min-width: 768px) and (max-width: 1279px) {
             .pub-wrap {
                 padding: 0 24px;
@@ -487,7 +486,7 @@
             }
         }
 
-        /* ===== RESPONSIVE — DESKTOP (1280px+) ===== */
+        /* ===== RESPONSIVE — DESKTOP ===== */
         @media (min-width: 1280px) {
             .pub-wrap {
                 max-width: 580px;
@@ -553,19 +552,13 @@
 <body>
 
     <div class="pub-wrap">
-
-        <!-- HEADER -->
         <header class="site-header">
             <div class="logo" id="logoText">
                 <span class="logo-bar"></span>
                 <span class="logo-name">Matheus Daia</span>
             </div>
         </header>
-
-        <!-- CARDS -->
         <div class="cards" id="cardsContainer"></div>
-
-        <!-- SOCIALS -->
         <div class="socials" id="socialsRow">
             <a href="#" id="socIG" class="soc-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 24 24">
@@ -592,11 +585,8 @@
                 </svg>
             </a>
         </div>
-
     </div>
-    <!-- pub-wrap ends — bio is OUTSIDE for full width -->
 
-    <!-- BIO SECTION (full width) -->
     <section class="bio-section" id="bioSection">
         <img src="" class="bio-photo" id="bioPhoto" alt="Bio Photo" />
         <div class="bio-text">
@@ -605,7 +595,6 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-links">
             <a href="#">Aviso de Privacidade</a>
@@ -619,158 +608,96 @@
         (() => {
             'use strict';
 
-            // ===== LOCALSTORAGE KEYS (shared with admin.html) =====
-            const KEYS = {
-                cards: 'ltb_cards',
-                logo: 'ltb_logo',
-                bio: 'ltb_bio',
-                socials: 'ltb_socials'
-            };
-
-            // ===== DEFAULTS =====
-            const DEFAULT_CARDS = [
-                { img: '', tag: 'ACESSE AGORA', title: 'MINHA MENTORIA', sub: 'Transforme seus resultados com IA e automação', cta: 'QUERO ACESSAR', url: '#', on: true },
-                { img: '', tag: 'SIGA-ME', title: 'INSTAGRAM', sub: '@omatheus.ai • 335k seguidores', cta: 'SEGUIR AGORA', url: '#', on: true },
-                { img: '', tag: 'INSCREVA-SE', title: 'CANAL DO YOUTUBE', sub: 'Conteúdo sobre IA, automação e produtividade', cta: 'ACESSAR CANAL', url: '#', on: true },
-                { img: '', tag: 'FALE COMIGO', title: 'WHATSAPP', sub: 'Entre em contato direto', cta: 'CHAMAR AGORA', url: '#', on: true },
-                { img: '', tag: 'MATRICULE-SE', title: 'MEU CURSO', sub: 'Aprenda IA e automação do zero ao avançado', cta: 'GARANTIR VAGA', url: '#', on: true },
-                { img: '', tag: 'OUÇA AGORA', title: 'PODCAST', sub: 'Episódios sobre IA, negócios e produtividade', cta: 'OUVIR EPISÓDIOS', url: '#', on: true },
-                { img: '', tag: 'CONFIRA', title: 'PORTFÓLIO', sub: 'Veja meus projetos e cases de sucesso', cta: 'VER PORTFÓLIO', url: '#', on: true },
-                { img: '', tag: 'ACESSE', title: 'MINHA LOJA', sub: 'Ferramentas e recursos para criadores', cta: 'ACESSAR LOJA', url: '#', on: true }
-            ];
-
-            const DEFAULT_BIO = { name: 'Matheus Daia', text: 'Criador de conteúdo especializado em IA e automação.\n\nFundador da Destrave Academy.\n\nAjudo criadores e empresas a crescerem com tecnologia.', photo: '' };
-            const DEFAULT_SOCIALS = { instagram: '#', youtube: '#', whatsapp: '#', tiktok: '#' };
-            const DEFAULT_LOGO = '';
-
-            // ===== LOAD FROM LOCALSTORAGE =====
-            function loadJSON(key, fallback) {
-                try {
-                    const raw = localStorage.getItem(key);
-                    if (raw) return JSON.parse(raw);
-                } catch (e) { }
-                return fallback;
-            }
-
-            // ===== MIGRATE from old key =====
-            function migrateOldData() {
-                const oldKey = 'md_linktree';
-                const oldRaw = localStorage.getItem(oldKey);
-                if (!oldRaw) return;
-                try {
-                    const old = JSON.parse(oldRaw);
-                    // Only migrate if new keys don't exist yet
-                    if (!localStorage.getItem(KEYS.cards) && Array.isArray(old.cards)) {
-                        localStorage.setItem(KEYS.cards, JSON.stringify(old.cards));
-                    }
-                    if (!localStorage.getItem(KEYS.logo) && old.logoImg) {
-                        localStorage.setItem(KEYS.logo, JSON.stringify(old.logoImg));
-                    }
-                    if (!localStorage.getItem(KEYS.bio)) {
-                        localStorage.setItem(KEYS.bio, JSON.stringify({
-                            name: old.bio?.name || 'Matheus Daia',
-                            text: old.bio?.text || '',
-                            photo: old.bioImg || ''
-                        }));
-                    }
-                    if (!localStorage.getItem(KEYS.socials) && old.socials) {
-                        localStorage.setItem(KEYS.socials, JSON.stringify({
-                            instagram: old.socials.ig || '#',
-                            youtube: old.socials.yt || '#',
-                            whatsapp: old.socials.wa || '#',
-                            tiktok: old.socials.tk || '#'
-                        }));
-                    }
-                } catch (e) { }
-            }
-
-            // ===== DOM HELPERS =====
             const $ = id => document.getElementById(id);
             const esc = s => { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; };
 
-            // ===== RENDER =====
-            function render() {
-                migrateOldData();
+            async function loadData() {
+                try {
+                    const res = await fetch('get_data.php');
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return await res.json();
+                } catch (e) {
+                    console.warn('Erro ao carregar dados do servidor:', e);
+                    return {
+                        logo: '',
+                        cards: [],
+                        bio: { name: 'Matheus Daia', text: '', photo: '' },
+                        socials: { instagram: '#', youtube: '#', whatsapp: '#', tiktok: '#' }
+                    };
+                }
+            }
 
-                const cards = loadJSON(KEYS.cards, DEFAULT_CARDS);
-                const logoImg = loadJSON(KEYS.logo, DEFAULT_LOGO);
-                const bio = loadJSON(KEYS.bio, DEFAULT_BIO);
-                const socials = loadJSON(KEYS.socials, DEFAULT_SOCIALS);
-
-                // -- Logo --
+            function render(data) {
+                // Logo
                 const logoEl = $('logoText');
-                if (logoImg) {
-                    logoEl.innerHTML = `<img src="${esc(logoImg)}" class="logo-img" alt="Logo" />`;
+                if (data.logo) {
+                    logoEl.innerHTML = `<img src="${esc(data.logo)}" class="logo-img" alt="Logo" />`;
                 } else {
                     logoEl.innerHTML = `<span class="logo-bar"></span><span class="logo-name">Matheus Daia</span>`;
                 }
 
-                // -- Cards --
+                // Cards
                 const ct = $('cardsContainer');
                 ct.innerHTML = '';
-                cards.forEach((c, i) => {
-                    if (c.on === false) return; // skip hidden cards
+                (data.cards || []).forEach((c, i) => {
+                    if (c.visible === false) return;
                     const div = document.createElement('div');
                     div.className = 'hero-card';
-                    div.dataset.i = i;
-                    const imageHTML = c.img
-                        ? `<img src="${esc(c.img)}" class="card-image" alt="${esc(c.title)}" />`
+                    const imageHTML = c.image
+                        ? `<img src="${esc(c.image)}" class="card-image" alt="${esc(c.title)}" />`
                         : `<div class="card-image-placeholder"></div>`;
                     div.innerHTML = `
                     <div class="card-image-wrapper">${imageHTML}</div>
                     <div class="card-content">
                         <span class="card-tag">${esc(c.tag)}</span>
                         <h2 class="card-title">${esc(c.title)}</h2>
-                        <p class="card-subtitle">${esc(c.sub)}</p>
-                        <a href="${esc(c.url)}" class="card-cta" target="_blank" rel="noopener noreferrer">${esc(c.cta)}</a>
+                        <p class="card-subtitle">${esc(c.subtitle)}</p>
+                        <a href="${esc(c.ctaUrl || '#')}" class="card-cta" target="_blank" rel="noopener noreferrer">${esc(c.ctaText)}</a>
                     </div>`;
                     ct.appendChild(div);
                 });
 
-                // -- Bio --
+                // Bio
+                const bio = data.bio || {};
                 $('bioName').textContent = bio.name || 'Matheus Daia';
 
                 const bioTextEl = $('bioText');
                 bioTextEl.innerHTML = '';
-                const rawBioText = bio.text || '';
-                let paragraphs = rawBioText.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
-
-                // Fallback: split by ". " followed by uppercase
-                if (paragraphs.length <= 1 && rawBioText.length > 120) {
-                    paragraphs = rawBioText
-                        .split(/\.\s+(?=[A-ZÁÀÃÂÉÊÍÓÔÕÚÇ])/)
+                const rawBio = bio.text || '';
+                let paragraphs = rawBio.split(/\n\s*\n/).map(p => p.trim()).filter(p => p.length > 0);
+                if (paragraphs.length <= 1 && rawBio.length > 120) {
+                    paragraphs = rawBio.split(/\.\s+(?=[A-ZÁÀÃÂÉÊÍÓÔÕÚÇ])/)
                         .map((p, i, arr) => (i < arr.length - 1 ? p.trim() + '.' : p.trim()))
                         .filter(p => p.length > 0);
                 }
-                if (paragraphs.length === 0 && rawBioText.trim()) {
-                    paragraphs = [rawBioText.trim()];
-                }
+                if (paragraphs.length === 0 && rawBio.trim()) paragraphs = [rawBio.trim()];
                 paragraphs.forEach(p => {
                     const pEl = document.createElement('p');
                     pEl.textContent = p;
                     bioTextEl.appendChild(pEl);
                 });
 
-                // Bio photo: hide entirely when no image
                 const bioPhotoEl = $('bioPhoto');
-                const bioPhoto = bio.photo || '';
-                if (bioPhoto) {
-                    bioPhotoEl.src = bioPhoto;
+                if (bio.photo) {
+                    bioPhotoEl.src = bio.photo;
                     bioPhotoEl.style.display = 'block';
                 } else {
                     bioPhotoEl.style.display = 'none';
                 }
 
-                // -- Socials --
-                $('socIG').href = socials.instagram || '#';
-                $('socYT').href = socials.youtube || '#';
-                $('socWA').href = socials.whatsapp || '#';
-                $('socTK').href = socials.tiktok || '#';
+                // Socials
+                const soc = data.socials || {};
+                $('socIG').href = soc.instagram || '#';
+                $('socYT').href = soc.youtube || '#';
+                $('socWA').href = soc.whatsapp || '#';
+                $('socTK').href = soc.tiktok || '#';
             }
 
-            // ===== INIT =====
-            document.addEventListener('DOMContentLoaded', render);
-            window.addEventListener('resize', render);
+            // Init
+            document.addEventListener('DOMContentLoaded', async () => {
+                const data = await loadData();
+                render(data);
+            });
         })();
     </script>
 
